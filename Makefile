@@ -5,11 +5,10 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = hack
 
-# 1. Finds all .cpp files inside the KittyMemory folder automatically
-hack_FILES = Tweak.x $(wildcard KittyMemory/*.cpp)
+# Change Tweak.x to Tweak.xm here
+hack_FILES = Tweak.xm $(wildcard KittyMemory/*.cpp)
 
-# 2. -I. tells clang to look in the root folder
-# 3. -IKittyMemory tells clang to look INSIDE the KittyMemory folder for .hpp files
+# Keep these include paths so it finds KittyMemory.hpp
 hack_CFLAGS = -fobjc-arc -I. -IKittyMemory
 hack_LDFLAGS = -lsubstrate
 
