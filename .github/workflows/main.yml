@@ -19,13 +19,13 @@ jobs:
 
       - name: Build Package
         run: |
-          # Targeting iOS 26.2 deployment
           make package FINALPACKAGE=1
         env:
           THEOS: ${{ github.workspace }}/theos
 
-      - name: Upload Artifact
+      - name: Upload Dylib Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: StealthBypass-DEB
-          path: packages/*.deb
+          name: StealthBypass-Dylib
+          # This looks into the build folder specifically for the dylib
+          path: .theos/obj/**/*.dylib
