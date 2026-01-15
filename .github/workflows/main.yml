@@ -6,28 +6,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        # Updated to v4 to avoid deprecation errors
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
       - name: Setup Theos
-        uses: apple-actions/setup-theos@v1
+        # Uses the reliable community-standard action for 2026
+        uses: Randomblock1/theos-action@v1
         with:
-          theos-src: https://github.com/theos/theos.git
-
-      - name: Setup SDK
-        run: |
-          svn checkout https://github.com/theos/sdks/trunk/iPhoneOS14.5.sdk $THEOS/sdks/iPhoneOS14.5.sdk
+          theos-src: https://github.com/theos/theos
+          theos-sdks: https://github.com/theos/sdks
 
       - name: Build Package
         run: |
-          export THEOS_DEVICE_IP=127.0.0.1 # Dummy IP for compilation
+          # Use the SDK we just found in your previous steps
+          export THEOS_DEVICE_IP=127.0.0.1
           make package FINALPACKAGE=1
         env:
           THEOS: ${{ github.workspace }}/theos
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        # Updated to v4 (or v6) as v3 is now blocked
+        uses: actions/upload-artifact@v4
         with:
           name: StealthBypass-DEB
           path: packages/*.deb
