@@ -3,16 +3,15 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest  # Now using native Apple environment
     steps:
-      - name: Checkout
-        # Updated to v4 to avoid deprecation errors
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
           submodules: recursive
 
       - name: Setup Theos
-        # Uses the reliable community-standard action for 2026
+        # This handles all dependencies and toolchains automatically
         uses: Randomblock1/theos-action@v1
         with:
           theos-src: https://github.com/theos/theos
@@ -20,14 +19,14 @@ jobs:
 
       - name: Build Package
         run: |
-          # Use the SDK we just found in your previous steps
+          # Use the SDK installed by the action
           export THEOS_DEVICE_IP=127.0.0.1
           make package FINALPACKAGE=1
         env:
           THEOS: ${{ github.workspace }}/theos
 
       - name: Upload Artifact
-        # Updated to v4 (or v6) as v3 is now blocked
+        # Using v4 to avoid deprecation errors
         uses: actions/upload-artifact@v4
         with:
           name: StealthBypass-DEB
