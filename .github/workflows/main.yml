@@ -1,0 +1,33 @@
+name: Build CODM Bypass
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Setup Theos
+        uses: apple-actions/setup-theos@v1
+        with:
+          theos-src: https://github.com/theos/theos.git
+
+      - name: Setup SDK
+        run: |
+          svn checkout https://github.com/theos/sdks/trunk/iPhoneOS14.5.sdk $THEOS/sdks/iPhoneOS14.5.sdk
+
+      - name: Build Package
+        run: |
+          export THEOS_DEVICE_IP=127.0.0.1 # Dummy IP for compilation
+          make package FINALPACKAGE=1
+        env:
+          THEOS: ${{ github.workspace }}/theos
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: StealthBypass-DEB
+          path: packages/*.deb
