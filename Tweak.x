@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "KittyMemory/KittyMemory.hpp"
-#import "KittyMemory/MemoryPatch.hpp"
-
+#import "KittyMemory.hpp"
+#import "MemoryPatch.hpp"
+// ... (rest of your random UDID and bypass code)
 // --- OFFSETS FROM YOUR ANALYSIS ---
 #define OFFSET_RADAR        0x101400004 //
 #define OFFSET_VISIBILITY   0x101667c08 //
